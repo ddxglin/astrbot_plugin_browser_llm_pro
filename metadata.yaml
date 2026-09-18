@@ -19,5 +19,5 @@ help:
   - browser_record_stop: 结束录屏并发送视频
 configurable: true
 version: v1.0.0
-author: AI Assistant
-repo: https://github.com/<你的用户名>/browser_llm_pro
+author: ddxglin
+repo: https://github.com/ddxglin/browser_llm_pro
