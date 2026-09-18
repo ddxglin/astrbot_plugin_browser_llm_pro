@@ -1,0 +1,386 @@
+{
+    "browser_type": {
+        "description": "浏览器类型",
+        "hint": "选择浏览器引擎",
+        "type": "string",
+        "default": "chromium",
+        "options": [
+            "chromium",
+            "firefox",
+            "webkit"
+        ],
+        "labels": [
+            "Chromium（Chrome内核）",
+            "Firefox（火狐内核）",
+            "WebKit（Safari内核）"
+        ]
+    },
+    "flash_ruffle": {
+        "description": "Flash 游戏支持（Ruffle）",
+        "hint": "开启后用内置的 Ruffle（WASM 版 Flash 模拟器）接管网页里遗留的 Flash 游戏：普通网页零开销，只有页面里真有 embed/object 的 Flash 元素时才注入。关了就没法玩 7k7k/miniplay 这类老 Flash 页游",
+        "type": "bool",
+        "default": true
+    },
+    "browser_proxy": {
+        "description": "浏览器代理",
+        "hint": "留空 = 自动用环境变量里的 HTTPS_PROXY/HTTP_PROXY（本机有 192.168.124.99:7892）。某些站点直连不通时可以在这里显式指定，如 http://192.168.124.99:7892；填 direct 表示强制不走代理",
+        "type": "string",
+        "default": ""
+    },
+    "mem_min_available_mb": {
+        "description": "内存守护：真实可用内存下限(MB)",
+        "hint": "只有当 MemAvailable 低于这个值（或 PSI 内存停顿明显）时，才算“真的缺内存”，才可能关浏览器。本机 7.9G 内存、常年可用 3G 左右，占用百分比高大多是 page cache —— 只看百分比会把浏览器反复误杀",
+        "type": "int",
+        "default": 900
+    },
+    "verify_browser": {
+        "description": "验证浏览器安装",
+        "hint": "启动前检查浏览器是否已安装",
+        "type": "bool",
+        "default": true
+    },
+    "default_search_engine": {
+        "description": "默认搜索引擎",
+        "hint": "浏览器默认使用的搜索引擎",
+        "type": "string",
+        "default": "必应搜索"
+    },
+    "default_url": {
+        "description": "浏览器起始页（主页）",
+        "hint": "浏览器打开时先访问的页面。留空则按上面选的搜索引擎自动决定（必应搜索→bing.com）。以前这一项不在面板里，代码里写死回落到百度，所以你看到的起始页一直是百度",
+        "type": "string",
+        "default": "https://www.bing.com"
+    },
+    "viewport_width": {
+        "description": "浏览器视窗宽度",
+        "hint": "浏览器窗口的像素宽度",
+        "type": "int",
+        "default": 1920,
+        "slider": {
+            "min": 800,
+            "max": 3840,
+            "step": 100
+        }
+    },
+    "viewport_height": {
+        "description": "浏览器视窗高度",
+        "hint": "浏览器窗口的像素高度",
+        "type": "int",
+        "default": 1400,
+        "slider": {
+            "min": 600,
+            "max": 2160,
+            "step": 100
+        }
+    },
+    "screenshot_quality": {
+        "description": "截图质量",
+        "hint": "截图的JPEG质量（1-100），数值越高图片越大",
+        "type": "int",
+        "default": 65,
+        "slider": {
+            "min": 10,
+            "max": 100,
+            "step": 5
+        }
+    },
+    "action_screenshot": {
+        "description": "动作后直接带回截图",
+        "hint": "点击/按键/滚动等动作完成后，把刚截的图直接附在结果里（省掉模型再调一次截图的往返，约 3.6 秒）。关掉则只回文字，模型需自己再截图",
+        "type": "bool",
+        "default": true
+    },
+    "action_digest": {
+        "description": "动作后附带页面摘要",
+        "hint": "动作结果里附一行页面摘要（标题 | URL | 可点元素 | 正文开头）。实测一段 46 步的浏览会话里有 20 步是在单独打听这些信息，每次往返约 3.6 秒；开着更省往返，关掉更省 token",
+        "type": "bool",
+        "default": true
+    },
+    "action_digest_chars": {
+        "description": "摘要里正文长度",
+        "hint": "页面摘要中“正文开头”的字数上限，0 = 不要正文（只给标题/URL/可点元素）。120 字约 90 token",
+        "type": "int",
+        "default": 120,
+        "slider": {
+            "min": 0,
+            "max": 600,
+            "step": 20
+        }
+    },
+    "screenshot_max_width": {
+        "description": "看图默认宽度",
+        "hint": "截图/动作回图的默认最大宽度（像素）。越小 token 越少、模型越快：1024 够看布局，800 更快，1600+ 用于看小字",
+        "type": "int",
+        "default": 1024,
+        "slider": {
+            "min": 480,
+            "max": 1920,
+            "step": 160
+        }
+    },
+    "zoom_factor": {
+        "description": "页面缩放（body zoom）",
+        "hint": "打开网页时整体放大的倍数。文字页面 1.5 更好读；**canvas 游戏（DOS 模拟器、网页小游戏）要设 1.0**，缩放会让画面变糊、也让坐标换算多一层",
+        "type": "float",
+        "default": 1.5
+    },
+    "max_pages": {
+        "description": "标签页上限",
+        "hint": "每个用户最多同时打开的标签页数量",
+        "type": "int",
+        "default": 5,
+        "slider": {
+            "min": 1,
+            "max": 20,
+            "step": 1
+        }
+    },
+    "nav_timeout": {
+        "description": "打开网页超时(秒)",
+        "hint": "page.goto 的等待上限。原来走通用 30s 超时，慢站点实测卡到 37s；15s 后即使没加载完也会先看页面有没有内容",
+        "type": "int",
+        "default": 15,
+        "slider": {
+            "min": 5,
+            "max": 60,
+            "step": 5
+        }
+    },
+    "action_timeout_ms": {
+        "description": "单个元素动作超时(ms)",
+        "hint": "点击/悬停/输入等待元素“可操作”的上限。Playwright 默认 30000ms——元素被遮挡时会白等 30 秒（实测出现过）；3000ms 后改为强制点击或直接报错",
+        "type": "int",
+        "default": 3000,
+        "slider": {
+            "min": 500,
+            "max": 30000,
+            "step": 500
+        }
+    },
+    "timeout": {
+        "description": "操作超时时间",
+        "hint": "浏览器操作的超时时间（秒）",
+        "type": "int",
+        "default": 30,
+        "slider": {
+            "min": 5,
+            "max": 120,
+            "step": 5
+        }
+    },
+    "max_concurrent_users": {
+        "description": "最大并发用户数",
+        "hint": "同时服务的用户数量上限，超出将自动驱逐最不活跃用户",
+        "type": "int",
+        "default": 10,
+        "slider": {
+            "min": 1,
+            "max": 50,
+            "step": 1
+        }
+    },
+    "global_browser_count_limit": {
+        "description": "全局浏览器实例上限",
+        "hint": "服务器上同时运行的浏览器实例总数上限",
+        "type": "int",
+        "default": 20,
+        "slider": {
+            "min": 5,
+            "max": 100,
+            "step": 5
+        }
+    },
+    "max_process_memory_mb": {
+        "description": "单个浏览器进程最大内存",
+        "hint": "单个浏览器进程超过此限制会自动重启（MB）",
+        "type": "int",
+        "default": 512,
+        "slider": {
+            "min": 128,
+            "max": 2048,
+            "step": 64
+        }
+    },
+    "astrbot_memory_budget_mb": {
+        "description": "AstrBot 自身内存预算",
+        "hint": "次级判据：AstrBot 本体+它启动的浏览器合计超过此值才关浏览器（MB）。填 0 关闭这条",
+        "type": "int",
+        "default": 3072,
+        "slider": {
+            "min": 0,
+            "max": 6144,
+            "step": 256
+        }
+    },
+    "max_memory_percent": {
+        "description": "整机内存阈值（主判据）",
+        "hint": "宿主机整机内存占用超过此百分比就关闭浏览器（默认 80%）。注意：容器里读到的是宿主机内存，不是容器自己的",
+        "type": "int",
+        "default": 80,
+        "slider": {
+            "min": 50,
+            "max": 95,
+            "step": 1
+        }
+    },
+    "idle_timeout": {
+        "description": "闲置超时时间",
+        "hint": "用户浏览器闲置超过此时间自动关闭（秒）",
+        "type": "int",
+        "default": 600,
+        "slider": {
+            "min": 60,
+            "max": 3600,
+            "step": 60
+        }
+    },
+    "max_operations_per_minute": {
+        "description": "每分钟操作上限",
+        "hint": "用户每分钟最多操作次数，超出触发熔断限制",
+        "type": "int",
+        "default": 20,
+        "slider": {
+            "min": 5,
+            "max": 100,
+            "step": 5
+        }
+    },
+    "hard_operation_timeout": {
+        "description": "硬超时时间",
+        "hint": "单次操作最长执行时间，超时强制重启浏览器（秒）",
+        "type": "int",
+        "default": 60,
+        "slider": {
+            "min": 10,
+            "max": 300,
+            "step": 10
+        }
+    },
+    "cache_max_size_mb": {
+        "description": "截图缓存上限",
+        "hint": "单个用户的截图缓存总大小上限（MB），超出自动清理",
+        "type": "int",
+        "default": 200,
+        "slider": {
+            "min": 10,
+            "max": 1000,
+            "step": 50
+        }
+    },
+    "cache_max_age_hours": {
+        "description": "缓存过期时间（小时）",
+        "hint": "截图文件超过此时间自动删除",
+        "type": "float",
+        "default": 2,
+        "slider": {
+            "min": 0.5,
+            "max": 24,
+            "step": 0.5
+        }
+    },
+    "screenshot_max_bytes": {
+        "description": "截图大小上限",
+        "hint": "单张截图最大字节数，超出自动压缩（字节，1MB=1048576）",
+        "type": "int",
+        "default": 5242880,
+        "slider": {
+            "min": 1048576,
+            "max": 10485760,
+            "step": 1048576
+        }
+    },
+    "monitor_interval": {
+        "description": "监控间隔",
+        "hint": "资源监控检查的间隔时间（秒）",
+        "type": "int",
+        "default": 10,
+        "slider": {
+            "min": 5,
+            "max": 60,
+            "step": 5
+        }
+    },
+    "record_max_duration": {
+        "description": "单次录屏最长时长",
+        "hint": "一次录屏最多录多少秒（上限 300），超时会自动停止采集。录得越长，视频越大、发到 QQ 越慢（实测 30 秒约 1~3MB）",
+        "type": "int",
+        "default": 120,
+        "slider": {
+            "min": 5,
+            "max": 300,
+            "step": 5
+        }
+    },
+    "record_fps": {
+        "description": "录屏帧率",
+        "hint": "合成视频的帧率，越高越流畅、文件越大",
+        "type": "int",
+        "default": 15,
+        "slider": {
+            "min": 5,
+            "max": 30,
+            "step": 5
+        }
+    },
+    "record_quality": {
+        "description": "录屏画质",
+        "hint": "采集帧的JPEG质量（1-100），越高越清晰、帧文件越大",
+        "type": "int",
+        "default": 70,
+        "slider": {
+            "min": 30,
+            "max": 95,
+            "step": 5
+        }
+    },
+    "record_max_width": {
+        "description": "录屏最大宽度",
+        "hint": "录屏采集尺寸上限；**0 = 跟随浏览器视口**（不缩放、不变形）。以前固定 1280×720，视口 1920×1400 时会被压成 ~987×720、两边留黑，看起来“画面小小的”。",
+        "type": "int",
+        "default": 0,
+        "slider": {
+            "min": 0,
+            "max": 1920,
+            "step": 160
+        }
+    },
+    "record_max_height": {
+        "description": "录屏最大高度",
+        "hint": "录屏采集尺寸上限；**0 = 跟随浏览器视口**（不缩放、不变形）。以前固定 1280×720，视口 1920×1400 时会被压成 ~987×720、两边留黑，看起来“画面小小的”。",
+        "type": "int",
+        "default": 0,
+        "slider": {
+            "min": 0,
+            "max": 1080,
+            "step": 120
+        }
+    },
+    "record_crf": {
+        "description": "录屏压缩质量",
+        "hint": "h264 的 CRF 值，越小越清晰体积越大（推荐 26-32）",
+        "type": "int",
+        "default": 30,
+        "slider": {
+            "min": 18,
+            "max": 40,
+            "step": 2
+        }
+    },
+    "record_keep_files": {
+        "description": "保留历史录屏数量",
+        "hint": "每个用户最多保留多少个录屏 mp4，超出自动清理旧的",
+        "type": "int",
+        "default": 20,
+        "slider": {
+            "min": 1,
+            "max": 200,
+            "step": 1
+        }
+    },
+    "record_audio": {
+        "description": "录屏录制声音",
+        "hint": "开启后录屏会连页面声音一起录（依赖容器内的 PulseAudio 虚拟声卡，插件会自动检查/启动；不可用时自动退回无声录制）",
+        "type": "bool",
+        "default": true
+    }
+}

@@ -1,0 +1,23 @@
+name: browser_llm_pro
+display_name: LLM 浏览器 Pro
+desc: 给 LLM 一套完整的浏览器工具：截图/点击/拖拽/按键/多标签/录屏(带声音)/Flash(Ruffle)/表单答题/页面摘要。按用户隔离浏览器实例，内置内存守护与进程回收
+help: 
+  - browser_open: 打开指定网页
+  - browser_click: 在指定坐标点击
+  - browser_input: 在输入框中输入文本
+  - browser_scroll: 滚动网页
+  - browser_screenshot: 获取截图
+  - browser_back: 返回上一页
+  - browser_forward: 前往下一页
+  - browser_zoom: 缩放页面
+  - browser_close: 关闭浏览器
+  - browser_get_tabs: 获取标签页列表
+  - browser_switch_tab: 切换标签页
+  - browser_close_tab: 关闭标签页
+  - browser_record: 录制网页画面（录屏），生成 mp4 并发送给用户
+  - browser_record_start: 手动开始录屏（配合其它操作）
+  - browser_record_stop: 结束录屏并发送视频
+configurable: true
+version: v1.0.0
+author: AI Assistant
+repo: https://github.com/<你的用户名>/browser_llm_pro
