@@ -1,4 +1,4 @@
-# browser_llm_pro
+# astrbot_plugin_browser_llm_pro
 
 > 给 AstrBot 上的大模型一套**能真正操作浏览器**的工具集：不止截图，还能点、拖、按键、批量答题、玩 Flash 老游戏，并把过程**录成带声音的视频**发出来。
 
@@ -50,10 +50,10 @@
 
 ```bash
 cd /AstrBot/data/plugins
-git clone https://github.com/ddxglin/browser_llm_pro.git
+git clone https://github.com/ddxglin/astrbot_plugin_browser_llm_pro.git
 
 # 可选：Flash（SWF 老游戏）支持，会下载 Ruffle 到 vendor/ruffle/
-bash browser_llm_pro/tools/fetch_ruffle.sh
+bash astrbot_plugin_browser_llm_pro/tools/fetch_ruffle.sh
 ```
 
 依赖：
@@ -108,7 +108,7 @@ bash browser_llm_pro/tools/fetch_ruffle.sh
 ## 目录结构
 
 ```
-browser_llm_pro/
+astrbot_plugin_browser_llm_pro/
 ├─ main.py                  # AstrBot 入口：配置转换
 ├─ browser_llm_plugin.py    # LLM 工具定义 + 每用户实例管理
 ├─ core/

@@ -1,4 +1,4 @@
-name: browser_llm_pro
+name: astrbot_plugin_browser_llm_pro
 display_name: LLM 浏览器 Pro
 desc: 给 LLM 一套完整的浏览器工具：截图/点击/拖拽/按键/多标签/录屏(带声音)/Flash(Ruffle)/表单答题/页面摘要。按用户隔离浏览器实例，内置内存守护与进程回收
 help: 
@@ -20,4 +20,4 @@ help:
 configurable: true
 version: v1.0.0
 author: ddxglin
-repo: https://github.com/ddxglin/browser_llm_pro
+repo: https://github.com/ddxglin/astrbot_plugin_browser_llm_pro
