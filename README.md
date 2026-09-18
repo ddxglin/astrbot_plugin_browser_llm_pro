@@ -6,13 +6,12 @@
 
 ---
 
-## 它和原版浏览器插件有什么不同
+## 设计取舍
 
-原版通常只有"打开 / 点击 / 输入 / 截图"几个动作，并且**截图不会回给模型**——模型想看一眼结果，得再发一次请求。
+让模型操作浏览器最贵的不是点击本身，而是**每一次往返**——实测每次工具调用往返 1~4 秒。
+所以这里的每个设计都在减少往返次数和 token：
 
-本插件把「**模型每一次往返都要花 1~4 秒**」当成核心约束来设计：
-
-| 设计 | 效果 |
+| 做法 | 效果 |
 |---|---|
 | 动作类工具的结果里**直接带上截图 + 页面摘要**（标题 / URL / 可点元素 / 正文开头 / 标签页） | 省掉"再问一次"的往返 |
 | `browser_act` **批量动作**：一次调用连做十几步（点击 / 按键 / 拖拽 / 等待），长序列按计划时长放宽超时 | 十几步 = 1 次往返 |
@@ -136,6 +135,12 @@ browser_llm_pro/
 先看返回里的页面摘要。若页面是 canvas 游戏，用 `browser_click_canvas` 抢焦点；若是表单，用 `browser_form` 看选项状态，不要靠"画面没变化"判断失败——选中往往只变一个高亮。
 
 ---
+
+## 致谢与来源
+
+- 本插件基于 [under-the-ocean/astrbot_plugin_browser_llm](https://github.com/under-the-ocean/astrbot_plugin_browser_llm) 二次开发，感谢原作者。
+- Flash 模拟器：[Ruffle](https://ruffle.rs/)（Apache-2.0 / MIT，需自行下载）。
+- 图标：Wikimedia Commons 的 *Internet Explorer logo for Windows 7*（CC0）。
 
 ## 许可
 
