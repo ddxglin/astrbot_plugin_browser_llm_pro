@@ -111,7 +111,7 @@ bash browser_llm_pro/tools/fetch_ruffle.sh
 ### 批量操作（推荐）
 ```python
 # 搜索框输入并回车，一次调用完成
-browser_act(actions='[{"type":"click","text":"搜索框"},{"type":"text","text":"原神"},{"type":"key","key":"Enter"},{"type":"wait","ms":1000}]')
+browser_act(actions='[{"type":"click","text":"搜索框"},{"type":"text","text":"飞八分钱"},{"type":"key","key":"Enter"},{"type":"wait","ms":1000}]')
 ```
 
 ### 一键做选择题
@@ -140,13 +140,13 @@ browser_key(key="ArrowRight", hold_ms=800)
 
 ## 🐛 常见问题
 
-**录屏没有声音？**
+**录屏没有声音？🤔**
 容器里需要 PulseAudio 虚拟声卡（`module-null-sink`）。另外不能让 Chromium 带 `--mute-audio`（Playwright 默认会加，插件已用 `ignore_default_args` 处理）。
 
-**内存被浏览器吃满？**
+**内存被浏览器吃满？😱**
 调低 `max_memory_percent`，或把 `idle_timeout` 调小；真实可用内存（`mem_min_available_mb`）充足时插件不会动手。
 
-**点击没反应？**
+**点击没反应？💀**
 先看返回里的页面摘要。若页面是 canvas 游戏，用 `browser_click_canvas` 抢焦点；若是表单，用 `browser_form` 看选项状态，不要靠「画面没变化」判断失败——选中往往只变一个高亮。
 
 ---
@@ -177,7 +177,7 @@ browser_llm_pro/
 
 ---
 
-## 🙏 致谢与来源
+## 🙏 致谢与来源   ~~握握手🤝~~
 
 - 本插件基于 [under-the-ocean/astrbot_plugin_browser_llm](https://github.com/under-the-ocean/astrbot_plugin_browser_llm) 二次开发，感谢原作者。
 - Flash 模拟器：[Ruffle](https://ruffle.rs/)（Apache-2.0 / MIT，需自行下载）。
