@@ -58,7 +58,7 @@
 
 ### 🕹️ Flash（Ruffle）老游戏
 - **`browser_play_swf(swf_url, base)`** — 用内置 Ruffle（WASM 版 Flash 模拟器）播放 .swf 老游戏
-
+~~Docker内存太小会炸~~
 ---
 
 ## 🎬 演示
