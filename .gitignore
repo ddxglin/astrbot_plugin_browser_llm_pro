@@ -3,6 +3,7 @@ __pycache__/
 vendor/
 extensions/
 data/
+favorite.json
 *.log
 recordings/
 screenshot_cache/
