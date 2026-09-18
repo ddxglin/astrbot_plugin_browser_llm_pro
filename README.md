@@ -38,11 +38,9 @@
 
 ## 演示
 
-下面这段是插件自己录的：模型读题 → 一次点完整页选项 → 提交 → 结果。
-
 ![答题演示](docs/demo-quiz.gif)
 
-（录屏本身输出的是 mp4，默认连页面声音一起录；这里为了在 README 里直接播放，转成了 GIF。）
+
 
 ---
 
@@ -79,17 +77,6 @@ bash browser_llm_pro/tools/fetch_ruffle.sh
 | `record_max_width/height` | 0 | 0 = 跟随视口，不缩放不变形 |
 | `flash_ruffle` | 开 | 是否启用 Flash（Ruffle）支持 |
 | `browser_proxy` | 空 | 留空直连；填 `env` 跟随环境变量；填 `direct` 强制直连 |
-
----
-
-## 一些踩过的坑（都体现在代码注释里）
-
-- **别给跑 canvas/WASM 的浏览器加 `--disable-gpu` 或 `--disable-accelerated-2d-canvas`**：会让每个操作从 0.3 秒变成 10~30 秒。
-- **文字点击不要用 Playwright 的 `get_by_text().wait_for()`**：找不到时要白等满 5 秒；改成一次 JS 扫描拿坐标，未命中 0.01 秒就能返回近似候选。
-- **坐标要换算**：截图会被缩到 `screenshot_max_width`，模型给的是图片像素；直接当页面坐标点会系统性偏左上。插件会按 (图片尺寸 → 视口尺寸 ÷ 页面缩放) 自动换算。
-- **每个用户实例只保留一套 chromium**：早期实现会多挂一套没人用的，白吃 300~500MB。
-- **内存守护要看真实压力**：只看"占用百分比"会把 page cache 算进去，导致浏览器被反复误杀。
-- **网页进全屏时把 `body zoom` 复位**，否则 canvas 会被放大到超出视口，录出来只有左上角。
 
 ---
 
